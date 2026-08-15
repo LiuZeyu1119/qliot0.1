@@ -1,0 +1,40 @@
+# Operating-system metadata
+.DS_Store
+._*
+/.fseventsd/
+/.Spotlight-V100/
+/.Trashes/
+
+# Local IDE and editor state
+/.qtcreator/
+/.qtcreator-backups/
+/.vscode/
+/.idea/
+*.user
+*.user.*
+*.autosave
+
+# CMake and Qt build output
+/build/
+/build-*/
+/cmake-build-*/
+/out/
+*.qm
+
+# Generated packages, logs, and runtime sidecars
+/dist/
+/com0com-results.txt
+*.log
+*.tmp
+*.bak
+*~
+/data/*.sqlite-journal
+/data/*.sqlite-shm
+/data/*.sqlite-wal
+
+# Local reference material and large archives (kept outside version control)
+/General Upper Computer Debugging Software5.5/
+/0805/
+/新建文件夹/
+/*.zip
+/*.zip.sha256.txt

@@ -1,0 +1,160 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "windows-qt-6.8.3-mingw-debug",
+      "displayName": "Windows Qt 6.8.3 MinGW 64-bit - Debug",
+      "description": "Qt Creator Debug configuration for the installed Qt 6.8.3 MinGW kit",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/qtcreator-windows-debug",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "environment": {
+        "PATH": "C:/Qt/6.8.3/mingw_64/bin;C:/Qt/Tools/mingw1310_64/bin;C:/Qt/Tools/Ninja;$penv{PATH}"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_COMPILER": {
+          "type": "FILEPATH",
+          "value": "C:/Qt/Tools/mingw1310_64/bin/g++.exe"
+        },
+        "CMAKE_MAKE_PROGRAM": {
+          "type": "FILEPATH",
+          "value": "C:/Qt/Tools/Ninja/ninja.exe"
+        },
+        "CMAKE_PREFIX_PATH": {
+          "type": "PATH",
+          "value": "C:/Qt/6.8.3/mingw_64"
+        }
+      }
+    },
+    {
+      "name": "windows-qt-6.8.3-mingw-release",
+      "displayName": "Windows Qt 6.8.3 MinGW 64-bit - Release",
+      "description": "Qt Creator Release configuration for the installed Qt 6.8.3 MinGW kit",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/qtcreator-windows-release",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "environment": {
+        "PATH": "C:/Qt/6.8.3/mingw_64/bin;C:/Qt/Tools/mingw1310_64/bin;C:/Qt/Tools/Ninja;$penv{PATH}"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_COMPILER": {
+          "type": "FILEPATH",
+          "value": "C:/Qt/Tools/mingw1310_64/bin/g++.exe"
+        },
+        "CMAKE_MAKE_PROGRAM": {
+          "type": "FILEPATH",
+          "value": "C:/Qt/Tools/Ninja/ninja.exe"
+        },
+        "CMAKE_PREFIX_PATH": {
+          "type": "PATH",
+          "value": "C:/Qt/6.8.3/mingw_64"
+        }
+      }
+    },
+    {
+      "name": "macos-homebrew",
+      "displayName": "macOS (Homebrew Qt)",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/macos-homebrew",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
+        "CMAKE_PREFIX_PATH": "/opt/homebrew/opt/qtbase",
+        "GUCDS_QT_PLUGIN_DIR": "/opt/homebrew/opt/qtbase/share/qt/plugins"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "windows-qt-6.8.3-mingw-debug",
+      "configurePreset": "windows-qt-6.8.3-mingw-debug",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "jobs": 4
+    },
+    {
+      "name": "windows-qt-6.8.3-mingw-release",
+      "configurePreset": "windows-qt-6.8.3-mingw-release",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "jobs": 4
+    },
+    {
+      "name": "macos-homebrew",
+      "configurePreset": "macos-homebrew",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      },
+      "jobs": 4
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "windows-qt-6.8.3-mingw-debug",
+      "configurePreset": "windows-qt-6.8.3-mingw-debug",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "windows-qt-6.8.3-mingw-release",
+      "configurePreset": "windows-qt-6.8.3-mingw-release",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "macos-homebrew",
+      "configurePreset": "macos-homebrew",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      },
+      "output": {
+        "outputOnFailure": true
+      },
+      "environment": {
+        "QT_PLUGIN_PATH": "/opt/homebrew/opt/qtbase/share/qt/plugins"
+      }
+    }
+  ]
+}

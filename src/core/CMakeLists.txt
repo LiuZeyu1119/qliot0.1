@@ -1,0 +1,45 @@
+qt_add_library(gucds_core STATIC
+    appconfig.cpp
+    atprotocol.cpp
+    busdevicetablemodel.cpp
+    calibrationtablemodel.cpp
+    devicecommunicationcontroller.cpp
+    delimitedtable.cpp
+    deviceparameter.cpp
+    devicetablemodel.cpp
+    labviewdatabase.cpp
+    measurementtablemodel.cpp
+    producttablemodel.cpp
+    serialsession.cpp
+    virtualdevice.cpp
+    virtualmodbusclient.cpp
+    virtualtransport.cpp
+    include/gucds/core/appconfig.h
+    include/gucds/core/atprotocol.h
+    include/gucds/core/busdevicetablemodel.h
+    include/gucds/core/calibrationtablemodel.h
+    include/gucds/core/devicecommunicationcontroller.h
+    include/gucds/core/delimitedtable.h
+    include/gucds/core/deviceparameter.h
+    include/gucds/core/devicetablemodel.h
+    include/gucds/core/labviewdatabase.h
+    include/gucds/core/measurementtablemodel.h
+    include/gucds/core/producttablemodel.h
+    include/gucds/core/records.h
+    include/gucds/core/serialsession.h
+    include/gucds/core/virtualdevice.h
+    include/gucds/core/virtualmodbusclient.h
+    include/gucds/core/virtualtransport.h
+)
+
+target_include_directories(gucds_core
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(gucds_core
+    PUBLIC
+        Qt6::Core
+    PRIVATE
+        Qt6::Sql
+)
