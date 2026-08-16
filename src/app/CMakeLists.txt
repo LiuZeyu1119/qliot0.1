@@ -29,6 +29,22 @@ set_target_properties(gucds_app PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
+if(WIN32 AND TARGET Qt6::windeployqt)
+    # Keep the build-tree executable directly runnable. Use Qt's imported
+    # deployment tool instead of PATH so an unrelated Qt installation (for
+    # example Anaconda's MSVC build) cannot supply ABI-incompatible DLLs.
+    add_custom_command(TARGET gucds_app POST_BUILD
+        COMMAND "$<TARGET_FILE:Qt6::windeployqt>"
+            --compiler-runtime
+            --translations zh_CN
+            --include-plugins qoffscreen
+            --dir "$<TARGET_FILE_DIR:gucds_app>"
+            "$<TARGET_FILE:gucds_app>"
+        VERBATIM
+        COMMAND_EXPAND_LISTS
+    )
+endif()
+
 if(APPLE AND GUCDS_QT_PLUGIN_DIR)
     add_custom_command(TARGET gucds_app POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory

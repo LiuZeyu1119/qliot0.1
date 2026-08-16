@@ -1,4 +1,6 @@
 qt_add_library(gucds_widgets STATIC
+    canmonitorwidget.cpp
+    include/gucds/widgets/canmonitorwidget.h
     dtuconfigdialog.cpp
     include/gucds/widgets/dtuconfigdialog.h
     frequencytensionparameterdialog.cpp

@@ -36,6 +36,7 @@ QStringList AppConfig::mainTabs()
         QCoreApplication::translate("AppConfig", "设备配置"),
         QCoreApplication::translate("AppConfig", "设备标定"),
         QCoreApplication::translate("AppConfig", "总线设备/网关"),
+        QCoreApplication::translate("AppConfig", "CAN总线"),
     };
 }
 

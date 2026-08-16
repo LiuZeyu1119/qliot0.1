@@ -11,6 +11,30 @@ target_link_libraries(gucds_core_tests
 
 add_test(NAME gucds_core_tests COMMAND gucds_core_tests)
 
+qt_add_executable(gucds_can_tests
+    test_can.cpp
+)
+
+target_link_libraries(gucds_can_tests
+    PRIVATE
+        Qt6::Test
+        gucds_core
+)
+
+add_test(NAME gucds_can_tests COMMAND gucds_can_tests)
+
+# This executable is intentionally not registered with CTest because it
+# requires a connected PCAN-USB adapter and the STM32F103 test firmware.
+qt_add_executable(gucds_pcan_hardware_test
+    test_can_hardware.cpp
+)
+
+target_link_libraries(gucds_pcan_hardware_test
+    PRIVATE
+        Qt6::Core
+        gucds_core
+)
+
 qt_add_executable(gucds_product_management_ui_tests
     test_product_management_ui.cpp
 )

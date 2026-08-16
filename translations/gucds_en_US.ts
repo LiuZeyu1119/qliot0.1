@@ -598,6 +598,96 @@
 <message><source>频谱曲线</source><translation>Spectrum</translation></message>
 <message><source>频率(Hz)</source><translation>Frequency (Hz)</translation></message>
 </context>
+<context><name>AppConfig</name>
+<message><source>CAN总线</source><translation>CAN Bus</translation></message>
+</context>
+<context><name>CanFrameTableModel</name>
+<message><source>时间</source><translation>Time</translation></message>
+<message><source>方向</source><translation>Direction</translation></message>
+<message><source>帧类型</source><translation>Frame Type</translation></message>
+<message><source>数据 (HEX)</source><translation>Data (HEX)</translation></message>
+<message><source>发送</source><translation>TX</translation></message>
+<message><source>接收</source><translation>RX</translation></message>
+</context>
+<context><name>gucds::PcanBasicSession</name>
+<message><source>PCAN-USB 通道必须在 1 到 16 之间</source><translation>The PCAN-USB channel must be between 1 and 16</translation></message>
+<message><source>不支持的 CAN 波特率：%1 bit/s</source><translation>Unsupported CAN bit rate: %1 bit/s</translation></message>
+<message><source>打开 PCAN-USB 失败：%1</source><translation>Failed to open PCAN-USB: %1</translation></message>
+<message><source>PCAN 通道实际波特率为 %1 bit/s，与请求的 %2 bit/s 不一致</source><translation>The actual PCAN channel bit rate is %1 bit/s, not the requested %2 bit/s</translation></message>
+<message><source>PCAN 通道已打开，但驱动报告警告：%1</source><translation>The PCAN channel is open, but the driver reported a warning: %1</translation></message>
+<message><source>关闭 PCAN 通道时驱动返回：%1</source><translation>The driver returned an error while closing the PCAN channel: %1</translation></message>
+<message><source>PCAN 通道尚未连接</source><translation>The PCAN channel is not connected</translation></message>
+<message><source>CAN 帧发送失败：%1</source><translation>Failed to send CAN frame: %1</translation></message>
+<message><source>CAN 帧已提交，但驱动报告警告：%1</source><translation>The CAN frame was submitted, but the driver reported a warning: %1</translation></message>
+<message><source>CAN ID 超出%1帧范围</source><translation>CAN ID exceeds the %1 frame range</translation></message>
+<message><source>扩展</source><translation>extended</translation></message>
+<message><source>标准</source><translation>standard</translation></message>
+<message><source>CAN DLC 不能超过 8</source><translation>CAN DLC cannot exceed 8</translation></message>
+<message><source>RTR 远程帧不能携带数据</source><translation>An RTR frame cannot carry data</translation></message>
+<message><source>经典 CAN 数据不能超过 8 字节</source><translation>Classic CAN data cannot exceed 8 bytes</translation></message>
+<message><source>CAN DLC 与数据长度不一致</source><translation>CAN DLC does not match the data length</translation></message>
+<message><source>读取 PCAN 接收队列失败：%1</source><translation>Failed to read the PCAN receive queue: %1</translation></message>
+<message><source>收到 PCAN 状态/错误帧（类型 0x%1）</source><translation>Received a PCAN status/error frame (type 0x%1)</translation></message>
+<message><source>收到 PCAN 状态帧：%1</source><translation>Received a PCAN status frame: %1</translation></message>
+<message><source>收到 CAN 错误帧（ID 0x%1）</source><translation>Received a CAN error frame (ID 0x%1)</translation></message>
+<message><source>驱动返回了无效 CAN DLC：%1</source><translation>The driver returned an invalid CAN DLC: %1</translation></message>
+<message><source>CAN 总线错误：%1</source><translation>CAN bus error: %1</translation></message>
+<message><source>PCAN-Basic 后端当前仅支持 Windows</source><translation>The PCAN-Basic backend currently supports Windows only</translation></message>
+<message><source>未找到 PCANBasic.dll；请安装 PCAN-Basic x64 驱动组件</source><translation>PCANBasic.dll was not found; install the PCAN-Basic x64 driver component</translation></message>
+<message><source>%1: 缺少必要的 PCAN-Basic 导出函数</source><translation>%1: required PCAN-Basic exports are missing</translation></message>
+<message><source>无法加载 PCAN-Basic API：%1</source><translation>Unable to load the PCAN-Basic API: %1</translation></message>
+</context>
+<context><name>gucds::CanMonitorWidget</name>
+<message><source>CAN 总线调试</source><translation>CAN Bus Debugger</translation></message>
+<message><source>通过 PCAN-USB 监视和发送经典 CAN 帧，并可一键验证 STM32F103 开发板。</source><translation>Monitor and transmit classic CAN frames through PCAN-USB, with one-click STM32F103 board verification.</translation></message>
+<message><source>PCAN 连接与开发板状态</source><translation>PCAN Connection and Board Status</translation></message>
+<message><source>连接</source><translation>Connect</translation></message>
+<message><source>开发板自检</source><translation>Board Self-Test</translation></message>
+<message><source>通道</source><translation>Channel</translation></message>
+<message><source>波特率</source><translation>Bit Rate</translation></message>
+<message><source>未连接</source><translation>Disconnected</translation></message>
+<message><source>未知</source><translation>Unknown</translation></message>
+<message><source>等待心跳</source><translation>Waiting for heartbeat</translation></message>
+<message><source>总线</source><translation>Bus</translation></message>
+<message><source>接收帧</source><translation>RX Frames</translation></message>
+<message><source>发送帧</source><translation>TX Frames</translation></message>
+<message><source>尚未加载</source><translation>Not loaded</translation></message>
+<message><source>操作</source><translation>Operation</translation></message>
+<message><source>就绪</source><translation>Ready</translation></message>
+<message><source>发送经典 CAN 帧</source><translation>Send Classic CAN Frame</translation></message>
+<message><source>最多 8 字节，例如 11 22 33 44</source><translation>Up to 8 bytes, for example 11 22 33 44</translation></message>
+<message><source>扩展帧</source><translation>Extended Frame</translation></message>
+<message><source>RTR 远程帧</source><translation>RTR Frame</translation></message>
+<message><source>发送</source><translation>Send</translation></message>
+<message><source>数据</source><translation>Data</translation></message>
+<message><source>CAN 帧监视器</source><translation>CAN Frame Monitor</translation></message>
+<message><source>最多保留最近 5000 帧</source><translation>Keeps the latest 5,000 frames</translation></message>
+<message><source>清空</source><translation>Clear</translation></message>
+<message><source>错误：%1</source><translation>Error: %1</translation></message>
+<message><source>正常</source><translation>Normal</translation></message>
+<message><source>FAIL：3 秒内未收到 F103 心跳帧 0x123</source><translation>FAIL: no F103 heartbeat frame 0x123 within 3 seconds</translation></message>
+<message><source>FAIL：1 秒内未收到匹配的 0x322 回显</source><translation>FAIL: no matching 0x322 echo within 1 second</translation></message>
+<message><source>经典 CAN 数据不能超过 8 字节</source><translation>Classic CAN data cannot exceed 8 bytes</translation></message>
+<message><source>HEX 数据格式错误；每个字节必须包含两位十六进制数</source><translation>Invalid HEX data; each byte must contain two hexadecimal digits</translation></message>
+<message><source>连接失败</source><translation>Connection failed</translation></message>
+<message><source>断开</source><translation>Disconnect</translation></message>
+<message><source>已连接</source><translation>Connected</translation></message>
+<message><source>FAIL：PCAN 通道已断开</source><translation>FAIL: the PCAN channel was disconnected</translation></message>
+<message><source>等待连接</source><translation>Waiting for connection</translation></message>
+<message><source>PCAN 通道已连接</source><translation>PCAN channel connected</translation></message>
+<message><source>心跳超时，开发板离线</source><translation>Heartbeat timed out; board is offline</translation></message>
+<message><source>CAN ID 格式错误</source><translation>Invalid CAN ID</translation></message>
+<message><source>在线，心跳 #%1</source><translation>Online, heartbeat #%1</translation></message>
+<message><source>FAIL：回显正确，但 CAN 控制器报告总线错误</source><translation>FAIL: echo matched, but the CAN controller reported a bus error</translation></message>
+<message><source>FAIL：回显正确，但 PCAN 状态为 0x%1</source><translation>FAIL: echo matched, but PCAN status is 0x%1</translation></message>
+<message><source>已发送 0x%1，DLC %2</source><translation>Sent 0x%1, DLC %2</translation></message>
+<message><source>PASS：500 kbit/s 心跳与 0x321 → 0x322 双向回显通过</source><translation>PASS: 500 kbit/s heartbeat and bidirectional 0x321 → 0x322 echo verified</translation></message>
+<message><source>FAIL：无法打开 PCAN-USB</source><translation>FAIL: unable to open PCAN-USB</translation></message>
+<message><source>FAIL：开发板自检必须选择 500 kbit/s</source><translation>FAIL: select 500 kbit/s for the board self-test</translation></message>
+<message><source>自检：等待 0x123 心跳</source><translation>Self-test: waiting for 0x123 heartbeat</translation></message>
+<message><source>FAIL：0x321 发送失败：%1</source><translation>FAIL: unable to send 0x321: %1</translation></message>
+<message><source>自检：等待 0x322 回显</source><translation>Self-test: waiting for 0x322 echo</translation></message>
+</context>
 <context><name>QPlatformTheme</name>
 <message><source>Cancel</source><translation>Cancel</translation></message>
 </context>

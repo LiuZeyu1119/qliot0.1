@@ -17,6 +17,29 @@
 - 曲线图先用自绘 `QWidget` 替代 `QtCharts`；当前本机 Qt 组件未发现 `Qt6Charts`。
 - 后续可以切到 QML/Qt Quick 做现代化界面，现有 `core` 模型和传输接口已与 Widgets 解耦，路线见 `docs/EXTENSION_AND_QML.md`。
 
+## CAN 总线调试
+
+主窗口的“CAN总线”页提供独立的经典 CAN 调试功能：
+
+- 通过 PCAN-Basic 动态连接 PCAN-USB 1..16，支持常用波特率，默认 500 kbit/s。
+- 接收并显示标准帧、扩展帧和 RTR 帧，记录时间、方向、ID、DLC、HEX 与 ASCII。
+- 可编辑 ID 和最多 8 字节数据并发送；支持标准/扩展/RTR 类型选择。
+- “开发板自检”会等待 STM32F103 的标准帧 `0x123`/DLC 8/`F103` 心跳，随后发送带随机数据的 `0x321`，要求在一秒内收到完全一致的 `0x322` 回显，并检查总线状态。
+
+Windows 后端从应用目录或 Windows `System32` 的绝对路径动态加载
+`PCANBasic.dll`，不依赖 Qt SerialBus，也不在仓库中分发厂商 DLL。使用前请安装
+与适配器授权和位数相符的 PCAN-Basic x64 驱动组件。
+
+Windows 构建在链接 `gucds_app` 后会自动运行 Qt 6.8.3 自带的 `windeployqt`，将
+匹配的 Qt/MinGW 运行库复制到程序目录，因此可直接双击构建目录中的程序运行。
+
+连接好 PCAN-USB 和已烧录 CAN 测试固件的 F103 后，可用与界面相同的后端执行
+显式硬件验收（该程序不会加入普通 CTest）：
+
+```powershell
+.\build\win-debug\gucds_pcan_hardware_test.exe
+```
+
 说明：英文界面只翻译软件文案。SQLite 中从 LabVIEW 导入的产品名、类别、曲线名和其他业务数据保留原文，避免自动翻译改变用户数据或匹配键。
 
 ## 构建

@@ -13,6 +13,7 @@
 #include "spectrumplotwidget.h"
 
 #include <QAbstractButton>
+#include <QAbstractItemView>
 #include <QAction>
 #include <QApplication>
 #include <QComboBox>
@@ -20,15 +21,20 @@
 #include <QFileDialog>
 #include <QGroupBox>
 #include <QHeaderView>
+#include <QGuiApplication>
+#include <QImage>
 #include <QLabel>
 #include <QLineEdit>
 #include <QMenu>
 #include <QMessageBox>
 #include <QCheckBox>
 #include <QPlainTextEdit>
+#include <QPalette>
 #include <QPushButton>
 #include <QSettings>
+#include <QScopeGuard>
 #include <QSpinBox>
+#include <QStyleHints>
 #include <QTabWidget>
 #include <QTableView>
 #include <QTableWidget>
@@ -51,6 +57,7 @@ private slots:
     void languageMenuIsBilingualAndRequiresRestart();
     void languageCanSwitchBothDirections();
     void englishUiKeepsProtocolKeysStable();
+    void lightThemeOverridesDarkSystemPalette();
 };
 
 void MainWindowUiTest::exposesImplementedOperations()
@@ -97,6 +104,18 @@ void MainWindowUiTest::exposesImplementedOperations()
     QCOMPARE(sideTools->count(), 2);
     QCOMPARE(sideTools->tabText(0), QStringLiteral("设备库"));
     QCOMPARE(sideTools->tabText(1), QStringLiteral("通信控制"));
+
+    auto *mainTabs = window.findChild<QTabWidget *>(QStringLiteral("mainTabs"));
+    QVERIFY(mainTabs);
+    QCOMPARE(mainTabs->count(), 5);
+    QCOMPARE(mainTabs->tabText(4), QStringLiteral("CAN总线"));
+    QVERIFY(window.findChild<QWidget *>(QStringLiteral("canMonitorWidget")));
+    auto *canBitrate = window.findChild<QComboBox *>(QStringLiteral("canBitrate"));
+    QVERIFY(canBitrate);
+    QCOMPARE(canBitrate->currentData().toInt(), 500000);
+    QVERIFY(window.findChild<QPushButton *>(QStringLiteral("canConnect")));
+    QVERIFY(window.findChild<QPushButton *>(QStringLiteral("canBoardSelfTest")));
+    QVERIFY(window.findChild<QTableView *>(QStringLiteral("canFrameTable")));
 
     auto *toolSections = window.findChild<QTabWidget *>(QStringLiteral("toolSections"));
     QVERIFY(toolSections);
@@ -871,8 +890,16 @@ void MainWindowUiTest::englishUiKeepsProtocolKeysStable()
     QVERIFY(QTest::qWaitForWindowExposed(&window));
     auto *tabs = window.findChild<QTabWidget *>(QStringLiteral("mainTabs"));
     QVERIFY(tabs);
+    QCOMPARE(tabs->count(), 5);
     QCOMPARE(tabs->tabText(0), QStringLiteral("Test Data"));
     QCOMPARE(tabs->tabText(1), QStringLiteral("Device Configuration"));
+    QCOMPARE(tabs->tabText(4), QStringLiteral("CAN Bus"));
+    auto *canConnect = window.findChild<QPushButton *>(QStringLiteral("canConnect"));
+    auto *canSelfTest = window.findChild<QPushButton *>(QStringLiteral("canBoardSelfTest"));
+    QVERIFY(canConnect);
+    QVERIFY(canSelfTest);
+    QCOMPARE(canConnect->text(), QStringLiteral("Connect"));
+    QCOMPARE(canSelfTest->text(), QStringLiteral("Board Self-Test"));
 
     auto *settingsMenu = window.findChild<QMenu *>(QStringLiteral("settingsMenu"));
     auto *languageMenu = window.findChild<QMenu *>(QStringLiteral("languageMenu"));
@@ -1063,6 +1090,73 @@ void MainWindowUiTest::englishUiKeepsProtocolKeysStable()
 
     qApp->removeTranslator(&translator);
     qApp->setProperty("uiLanguage", QStringLiteral("zh_CN"));
+}
+
+void MainWindowUiTest::lightThemeOverridesDarkSystemPalette()
+{
+    const QPalette originalPalette = qApp->palette();
+    const auto restorePalette = qScopeGuard([originalPalette] {
+        qApp->setPalette(originalPalette);
+    });
+    QPalette darkPalette = originalPalette;
+    darkPalette.setColor(QPalette::Window, QColor(QStringLiteral("#202020")));
+    darkPalette.setColor(QPalette::WindowText, QColor(QStringLiteral("#f0f0f0")));
+    darkPalette.setColor(QPalette::Base, QColor(QStringLiteral("#101010")));
+    darkPalette.setColor(QPalette::Text, QColor(QStringLiteral("#f0f0f0")));
+    darkPalette.setColor(QPalette::Button, QColor(QStringLiteral("#181818")));
+    darkPalette.setColor(QPalette::ButtonText, QColor(QStringLiteral("#f0f0f0")));
+    qApp->setPalette(darkPalette);
+
+    MainWindow window;
+    window.show();
+    QVERIFY(QTest::qWaitForWindowExposed(&window));
+    if (QGuiApplication::platformName() == QStringLiteral("windows"))
+        QCOMPARE(QGuiApplication::styleHints()->colorScheme(), Qt::ColorScheme::Light);
+    auto *mainTabs = window.findChild<QTabWidget *>(QStringLiteral("mainTabs"));
+    auto *comboBox = window.findChild<QComboBox *>(QStringLiteral("canBitrate"));
+    auto *canExtended = window.findChild<QCheckBox *>(QStringLiteral("canExtended"));
+    QVERIFY(mainTabs);
+    QVERIFY(comboBox);
+    QVERIFY(canExtended);
+    mainTabs->setCurrentIndex(4);
+    QCoreApplication::processEvents();
+    QVERIFY(comboBox->isVisible());
+    QVERIFY(canExtended->isVisible());
+
+    const QPalette closedPalette = comboBox->palette();
+    QCOMPARE(closedPalette.color(QPalette::Base), QColor(QStringLiteral("#ffffff")));
+    QCOMPARE(closedPalette.color(QPalette::Text), QColor(QStringLiteral("#172033")));
+    QCOMPARE(closedPalette.color(QPalette::Button), QColor(QStringLiteral("#ffffff")));
+    QCOMPARE(closedPalette.color(QPalette::ButtonText), QColor(QStringLiteral("#172033")));
+
+    const QString closedScreenshot = qEnvironmentVariable("QLIOT_DARK_COMBO_CLOSED_SCREENSHOT");
+    if (!closedScreenshot.isEmpty())
+        QVERIFY(comboBox->grab().save(closedScreenshot));
+
+    comboBox->showPopup();
+    QTRY_VERIFY_WITH_TIMEOUT(comboBox->view()->isVisible(), 1000);
+    const QPalette popupPalette = comboBox->view()->palette();
+    QCOMPARE(popupPalette.color(QPalette::Base), QColor(QStringLiteral("#ffffff")));
+    QCOMPARE(popupPalette.color(QPalette::Text), QColor(QStringLiteral("#172033")));
+    QCOMPARE(popupPalette.color(QPalette::Highlight), QColor(QStringLiteral("#dbeaf7")));
+    QCOMPARE(popupPalette.color(QPalette::HighlightedText), QColor(QStringLiteral("#12324f")));
+
+    const QString screenshot = qEnvironmentVariable("QLIOT_DARK_COMBO_SCREENSHOT");
+    if (!screenshot.isEmpty())
+        QVERIFY(comboBox->view()->window()->grab().save(screenshot));
+    comboBox->hidePopup();
+
+    mainTabs->setCurrentIndex(0);
+    window.resize(2200, 1000);
+    QCoreApplication::processEvents();
+    auto *measurementTable = window.findChild<QTableView *>(QStringLiteral("measurementTable"));
+    QVERIFY(measurementTable);
+    QHeaderView *header = measurementTable->horizontalHeader();
+    QVERIFY(header->viewport()->width() > header->length() + 20);
+    const QImage headerImage = header->grab().toImage();
+    const QColor emptyHeaderColor = headerImage.pixelColor(header->length() + 10,
+                                                           header->height() / 2);
+    QCOMPARE(emptyHeaderColor, QColor(QStringLiteral("#eef3f7")));
 }
 
 QTEST_MAIN(MainWindowUiTest)

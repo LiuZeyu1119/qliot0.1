@@ -2,6 +2,7 @@ qt_add_library(gucds_core STATIC
     appconfig.cpp
     atprotocol.cpp
     busdevicetablemodel.cpp
+    canframetablemodel.cpp
     calibrationtablemodel.cpp
     devicecommunicationcontroller.cpp
     delimitedtable.cpp
@@ -10,6 +11,7 @@ qt_add_library(gucds_core STATIC
     labviewdatabase.cpp
     measurementtablemodel.cpp
     producttablemodel.cpp
+    pcanbasicsession.cpp
     serialsession.cpp
     virtualdevice.cpp
     virtualmodbusclient.cpp
@@ -17,6 +19,8 @@ qt_add_library(gucds_core STATIC
     include/gucds/core/appconfig.h
     include/gucds/core/atprotocol.h
     include/gucds/core/busdevicetablemodel.h
+    include/gucds/core/canframe.h
+    include/gucds/core/canframetablemodel.h
     include/gucds/core/calibrationtablemodel.h
     include/gucds/core/devicecommunicationcontroller.h
     include/gucds/core/delimitedtable.h
@@ -25,6 +29,7 @@ qt_add_library(gucds_core STATIC
     include/gucds/core/labviewdatabase.h
     include/gucds/core/measurementtablemodel.h
     include/gucds/core/producttablemodel.h
+    include/gucds/core/pcanbasicsession.h
     include/gucds/core/records.h
     include/gucds/core/serialsession.h
     include/gucds/core/virtualdevice.h

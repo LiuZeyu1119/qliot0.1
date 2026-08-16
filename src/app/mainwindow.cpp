@@ -13,6 +13,7 @@
 #include "gucds/core/serialsession.h"
 #include "gucds/core/virtualmodbusclient.h"
 #include "gucds/widgets/dtuconfigdialog.h"
+#include "gucds/widgets/canmonitorwidget.h"
 #include "gucds/widgets/frequencytensionparameterdialog.h"
 #include "gucds/widgets/productmanagementdialog.h"
 #include "spectrumplotwidget.h"
@@ -30,6 +31,7 @@
 #include <QFormLayout>
 #include <QGridLayout>
 #include <QGroupBox>
+#include <QGuiApplication>
 #include <QHash>
 #include <QHBoxLayout>
 #include <QHeaderView>
@@ -52,6 +54,7 @@
 #include <QSplitter>
 #include <QTabBar>
 #include <QStatusBar>
+#include <QStyleHints>
 #include <QTabWidget>
 #include <QTableView>
 #include <QTreeWidget>
@@ -301,6 +304,13 @@ MainWindow::MainWindow(QWidget *parent)
     , m_busDeviceModel(new gucds::BusDeviceTableModel(this))
     , m_communicationController(new gucds::DeviceCommunicationController(this))
 {
+    // The application deliberately uses a light visual design. Tell the
+    // Windows platform style to draw native subcontrols (checkboxes, spin
+    // buttons, scrollbars, and title bar) with its light color scheme too.
+    // Otherwise a dark OS theme can leak black native pieces into the light
+    // stylesheet below.
+    QGuiApplication::styleHints()->setColorScheme(Qt::ColorScheme::Light);
+
     setWindowTitle(gucds::AppConfig::applicationTitle());
     resize(kLabViewWidth, kLabViewHeight);
     setMinimumSize(1180, 690);
@@ -435,6 +445,10 @@ MainWindow::MainWindow(QWidget *parent)
         }
         QTableView::item, QTreeWidget::item, QListWidget::item { padding: 4px 6px; }
         QTreeWidget::item:hover, QListWidget::item:hover { background: #edf5fb; }
+        QHeaderView {
+            background: #eef3f7;
+            color: #34465c;
+        }
         QHeaderView::section {
             background: #eef3f7;
             color: #34465c;
@@ -444,13 +458,33 @@ MainWindow::MainWindow(QWidget *parent)
             padding: 6px 7px;
             font-weight: 600;
         }
+        QTableCornerButton::section {
+            background: #eef3f7;
+            border: none;
+            border-right: 1px solid #d7e0e8;
+            border-bottom: 1px solid #cfd9e3;
+        }
         QLineEdit, QComboBox, QSpinBox {
             background: #ffffff;
+            color: #172033;
             border: 1px solid #bdc9d6;
             border-radius: 4px;
             min-height: 28px;
             padding: 0 7px;
             selection-background-color: #1769aa;
+            selection-color: #ffffff;
+        }
+        QComboBox QAbstractItemView {
+            background-color: #ffffff;
+            color: #172033;
+            border: 1px solid #bdc9d6;
+            selection-background-color: #dbeaf7;
+            selection-color: #12324f;
+            outline: 0;
+        }
+        QComboBox QAbstractItemView::item {
+            min-height: 28px;
+            padding: 3px 8px;
         }
         QLineEdit:focus, QComboBox:focus, QSpinBox:focus { border: 1px solid #1769aa; }
         QLineEdit:read-only { background: #f3f6f9; color: #4d5d70; }
@@ -502,19 +536,28 @@ MainWindow::MainWindow(QWidget *parent)
             padding: 8px 10px;
         }
         QPlainTextEdit#serialBuffer {
-            background: #111c2b;
-            color: #cfe4f5;
-            border-color: #26384d;
+            background: #f8fafc;
+            color: #24344a;
+            border-color: #cfd9e3;
             font: 9pt "Consolas";
         }
         QScrollArea { background: transparent; border: none; }
-        QCheckBox { spacing: 6px; }
+        QCheckBox { color: #172033; spacing: 6px; }
+        QCheckBox:disabled { color: #8b97a5; }
+        QToolTip {
+            background: #ffffff;
+            color: #172033;
+            border: 1px solid #bdc9d6;
+            padding: 4px 6px;
+        }
+        QAbstractScrollArea::corner { background: #edf2f6; }
         QScrollBar:vertical { background: #edf2f6; width: 10px; margin: 0; }
         QScrollBar::handle:vertical { background: #b8c6d3; min-height: 28px; border-radius: 4px; }
         QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }
         QScrollBar:horizontal { background: #edf2f6; height: 10px; margin: 0; }
         QScrollBar::handle:horizontal { background: #b8c6d3; min-width: 28px; border-radius: 4px; }
         QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal { width: 0; }
+        QScrollBar::add-page, QScrollBar::sub-page { background: transparent; }
     )QSS"));
 
     loadPersistedLabviewData();
@@ -1071,6 +1114,7 @@ QWidget *MainWindow::buildMainTabs()
     tabs->addTab(buildDeviceConfigTab(), tabNames.value(1));
     tabs->addTab(buildCalibrationTab(), tabNames.value(2));
     tabs->addTab(buildBusGatewayTab(), tabNames.value(3));
+    tabs->addTab(new gucds::CanMonitorWidget(tabs), tabNames.value(4));
     return tabs;
 }
 
